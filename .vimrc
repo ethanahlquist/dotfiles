@@ -1,101 +1,28 @@
-
-
-
-
 "-----------------------------------------
 " Ethan Ahlquist's Vimrc:
 "-----------------------------------------
 
 
 
-" Trial Period {{{1
-
-set foldmethod=marker
-
-"FileType commenting
-autocmd FileType javascript nnoremap <buffer> <localleader>c I//<esc>
-autocmd FileType python     nnoremap <buffer> <localleader>c I#<esc>
-
-"Ranged  FileType commenting (<localleader>C) *Or change to comment removal
-autocmd FileType javascript nnoremap <buffer> <localleader>C I//<esc>
-autocmd FileType python     nnoremap <buffer> <localleader>C I#<esc>
-
-"set mouse&
-"set mouse=r
-"set paste
-
-set nohlsearch
-
-set showcmd "(not good) shows only colon commands
-
-set encoding=utf-8
-
-set wildmode=longest,list,full         " Enable autocompletion:
-
-
-autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o   " Disables automatic commenting on newline
-
-set splitbelow splitright " Splits open at the bottom and right, which is non-retarded, unlike vim defaults.
-
-" Shortcutting split navigation, saving a keypress:
-	noremap <C-h> <C-w>h
-	noremap <C-j> <C-w>j
-	noremap <C-k> <C-w>k
-	noremap <C-l> <C-w>l
-
-" Copy selected text to system clipboard (requires gvim/nvim/vim-x11 installed):
-	vnoremap <C-c> "+y
-	map <C-p> "+P
-
-" Automatically deletes all trailing whitespace on save.
-" autocmd BufWritePre * %s/\s\+$//e
-
-"set clipboard=unnamedplus
-
-set rtp+=~/.fzf
-
-
-"THIS IS MOST LIKELY CAUSING BASH SPACING ISSUES:
-" Allow us to use Ctrl-s and Ctrl-q as keybinds
-silent !stty -ixon
-" Restore default behaviour when leaving Vim.
-autocmd VimLeave * silent !stty ixon
-
-        
-"onoremap 
-onoremap L $
-onoremap H 0
-
+" Trial Period {{{
 
 " }}}
 
 
 
-
-" Basics {{{1
+" Basics {{{
 
 syntax enable
 filetype plugin on
 filetype on
 
-set mouse=a
-
 "}}}
 
 
 
-
-" Visuals {{{1
+" Settings {{{
 
 colorscheme elflord
-
-"}}}
-
-
-
-
-" Settings {{{1
-
 set nocompatible     " enter current mullenium
 
 set nu               "Line Numbering:
@@ -110,29 +37,101 @@ set smarttab
 
 set bs=2                "Allows backspace in (Insert):
 
+set nohlsearch
+set showcmd
+set encoding=utf-8
+
+
 set wildmenu            " Display all matching files when we tab complete
 "                             \
 "                                - > hit tab to :find by partial match
 "                                - > Use * to make it fuzzy
 
+" Enable autocompletion:
+set wildmode=longest,list,full         
 
 
-set path+=**         "search down in subfolders (Provides tab-completion for all file related tasks)
-
-" autocmd FileType text
-
-" set directory=/tmp//              " No swapfiles in current directory
+"search down in subfolders (Provides tab-completion for all file related tasks)
+set path+=**         
 
 " }}}
 
 
 
+" Quick Change {{{ 
+
+
+"make increment and decrement also work with letters
+"set nrformats+=alpha
+
+
+" No swapfiles in current directory
+" set directory=/tmp//              
+
+
+"searches as you enter search string
+"set incsearch
+
+" Set to auto read when a file is changed from the outside
+"set autoread
+
+"Highlight search things
+"set hlsearch
+
+"limit text lines to 80 characters. Will create new line when this is exceeded.
+"set textwidth=80
+
+
+" }}}
+
+
+
+" Preferences {{{ 
+
+" Disables automatic commenting on newline
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o   
+
+" Splits open at the bottom and right, which is non-retarded, unlike vim defaults.
+set splitbelow splitright   
+
+" Copy selected text to system clipboard (requires gvim/nvim/vim-x11 installed):
+	vnoremap <C-c> "+y
+	map <C-p> "+P
+
+" Automatically deletes all trailing whitespace on save.
+"	autocmd BufWritePre * %s/\s\+$//e
+
+set mouse=a
+
+set foldmethod=marker
+
+"show the current row and column at the bottom of the screen
+set ruler
+
+" Sets how many lines of history VIM has to remember
+set history=700
+
+"Ignore case when searching
+set ignorecase
+set smartcase
+
+"use this for black/dark terminal background
+set background=dark
+
+"Not sure about this!
+set rtp+=~/.fzf
+
+"THIS IS MOST LIKELY CAUSING BASH SPACING ISSUES:
+" Allow us to use Ctrl-s and Ctrl-q as keybinds
+silent !stty -ixon
+" Restore default behaviour when leaving Vim.
+autocmd VimLeave * silent !stty ixon
+
+" }}}
+
+
 
 " Mappings {{{
-
-"nnoremap L $
-"nnoremap H 0
-
 
 inoremap jk <Esc>
 inoremap jj <Esc>
@@ -141,60 +140,61 @@ inoremap kk <Esc>
 
 inoremap <S-Tab> <C-D>
 
-"nnoremap <C-s>p :set spell!<CR>           " this is a way to toggle spelling correction quickly
-"nnoremap <C-s><C-p> :set spell!<CR>
+" Shortcutting split navigation, saving a keypress:
+	noremap <C-h> <C-w>h
+	noremap <C-j> <C-w>j
+	noremap <C-k> <C-w>k
+	noremap <C-l> <C-w>l
+
+" subsutite
+   nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
+   vnoremap <Leader>s y:%s/<C-R>=escape(@",'/\$^*')<CR>/
+
+" Find
+   vnoremap <Leader>f y/\V<C-R>=escape(@",'/\')<CR><CR>
+
+" This is a way to toggle spelling correction quickly
+   nnoremap <C-s>p :set spell!<CR>           
+   nnoremap <C-s><C-p> :set spell!<CR>
 
 " }}}
 
 
 
-
-"Buffers {{{
-
-
-"nnoremap <k0> :buffer 0
-
-"nnoremap <Esc>Oq :buffer 1
-"nnoremap <C-2> :buffer 2
-"nnoremap <k3> :buffer 3
-"nnoremap <k4> :buffer 4
-"nnoremap <k5> :buffer 5
-"nnoremap <k6> :buffer 6
-"nnoremap <k7> :buffer 7
-"nnoremap <k8> :buffer 8
-"nnoremap <k9> :buffer 9
-
-
-"}}}
-
-
-
-
-" File Shortcuts {{{
-
-
-cnoreab vnotes vert sp ~/Documents/Notes/VimNotes/VimCommands.txt
-cnoreab vimrc vert sp ~/.vimrc
-
-
-
-"}}}
-
-
-
-
 " C / C++ Specific {{{1
 
+      " Automatically deletes all trailing whitespace on save.
+
+	   autocmd FileType c,cpp autocmd BufWritePre * %s/\s\+$//e
+	   autocmd FileType c,cpp set cindent
+	   "autocmd FileType c,cpp autocmd BufWritePost :make
+      autocmd BufWritePost *.cpp,*.c make
+
+
    " Abbreviations {{{2
-      autocmd FileType c,cpp inoreab cmain 
-      \<CR>#include <stdio.h>
+      autocmd FileType c,cpp inoreab <buffer> cmain 
+      \#include <stdio.h>
+      \<CR>#include <string.h>
+      \<CR>#include <stdlib.h>
+      \<CR>#include <assert.h>
+      \<CR>#include <limits.h>
+      \<CR>#include <float.h>
+      \<CR>#include <unistd.h>
+      \<CR>#include <sys/types.h>
+      \<CR>#include <sys/wait.h>
+      \<CR>#include <libgen.h>
       \<CR>
-      \<CR>int main(void) {
-      \<CR><Tab>
-      \<CR><Tab>printf("Hello World\n");
+      \<CR>int main(int argc, char *argv[]) {
+      \<CR>
+      \<CR>printf("Hello World\n");
       \<CR>return 0;
       \<CR>
-      \<CR>}<Esc><<
+      \<CR>}
+      \<CR>
+      \<CR>void function(int i) {
+      \<CR>
+      \<CR>
+      \<CR>}
 
 
       autocmd FileType c,cpp inoreab nfor 
@@ -213,29 +213,38 @@ cnoreab vimrc vert sp ~/.vimrc
       autocmd FileType c,cpp inoreab wif 
       \<CR>if( condition ){
       \<CR><CR>}<Esc><<ddV'm>'mpo<Esc>
+
+
+      autocmd FileType c,cpp inoreab cheader 
+      \<CR>#ifndef FILE_H
+      \<CR>#define
+      \<CR>
+      \<CR>#include whatever.h
+      \<CR>
+      \<CR>
+      \<CR>
+      \<CR>
+      \<CR>
+      \<CR>#endif
+      \<CR><Esc>5ki
    "}}}
-
-
-
 
 "}}}
 
 
 
+" Text File Specific: {{{
 
-" Text File Specific: {{{1
+
+   " Settings {{{
 
 
-   " Settings {{{2
-
-      "autocmd FileType text set spell
-
-   "}}}
+   " }}}
 
 
 
-   " Abbreviations {{{2
-      autocmd FileType text inoreab nheader 
+   " Abbreviations {{{
+      autocmd FileType text inoreab nheader
       \<CR>################################################################################
       \<CR>#
       \<CR># Author: Ethan Ahlquist
@@ -248,17 +257,16 @@ cnoreab vimrc vert sp ~/.vimrc
       \#
       \<CR>################################################################################<Esc>
 
-
-
-
       autocmd FileType text inoreab fold 
       \{{{
       \<CR><CR>}}}<Esc><<ddV'm>'mpza
-   "}}}
+
+   "}}
 
 
 " }}}
 
+"}}}
 
 
 
@@ -304,11 +312,10 @@ cnoreab vimrc vert sp ~/.vimrc
 
 
 
-
 " LaTeX {{{1
 
    " Abbreviations {{{2
-   "
+   
       autocmd FileType c,cpp inoreab nfor 
       \<CR>for(i = 0; i < count; i++){
       \<CR>l<BS>
@@ -316,6 +323,7 @@ cnoreab vimrc vert sp ~/.vimrc
       \<CR>l<BS>
       \<CR>}<Esc><<o<Esc>
 
+      autocmd Filetype tex cmap <buffer> cauto autocmd BufWritePost <buffer> !pdflatex %
    "}}}
 
 
@@ -325,8 +333,11 @@ cnoreab vimrc vert sp ~/.vimrc
 
 
 
+" FUTURE STUFF {{{
 
-" FUTURE STUFF {{{1
+"-------------------------------------------
+" GO AWAY, YOU AREN'T SUPPOSED TO BE HERE!
+"-------------------------------------------
 
 " copy yank buffer to system clipboard
 " Usr OSC52 to put things into system clipboard, works over ssh
@@ -338,10 +349,6 @@ cnoreab vimrc vert sp ~/.vimrc
 " endfunction
 "
 " nnoremap <leader>y :call 0sc52Yank()<CR>
-
-
-
-
 
 
 
@@ -358,29 +365,6 @@ cnoreab vimrc vert sp ~/.vimrc
 "    autocmd!
 "    autocmd TextYankPost * if v:event.operator ==# 'y' | call Osc52Yank() | endif
 "augroup END
-
-
-
-
-
-" :help key-notation
-"Ethan Added stuff:
-
-
-
-"searches as you enter search string
-"set incsearch
-
-"show the current row and column at the bottom of the screen
-set ruler
-
-"use c indentation style and syntax highlighting for c, c++, and c0 files
-"autocmd FileType c,cpp :set cindent
-"autocmd FileType c,cpp :setf c
-"autocmd FileType c,cpp :set expandtab
-"au BufEnter *.c0 setf c
-"au BufEnter *.c0 set cindent
-"au BufEnter *.c0 set expandtab
 
 
 
@@ -441,45 +425,4 @@ set ruler
 "endif
 "endfunc
 
-
-" Sets how many lines of history VIM has to remember
-set history=700
-
-" Set to auto read when a file is changed from the outside
-"set autoread
-
-"Ignore case when searching
-set ignorecase
-set smartcase
-
-"Highlight search things
-"set hlsearch
-
-"limit text lines to 80 characters. Will create new line when this is exceeded.
-"set textwidth=80
-
-"use this for black/dark terminal background
-set background=dark
-
-
-
-"<kEnd>		   keypad end (lower left)		*keypad-end*
-"<kPageUp>	   keypad page-up (upper right)	*keypad-page-up*
-"<kPageDown>	keypad page-down (lower right)	*keypad-page-down*
-"<kPlus>		   keypad +			*keypad-plus*
-"<kMinus>	   keypad -			*keypad-minus*
-"<kMultiply>	keypad *			*keypad-multiply*
-"<kDivide>	   keypad /			*keypad-divide*
-"<kEnter>	   keypad Enter			*keypad-enter*
-"<kPoint>	   keypad Decimal point		*keypad-point*
-"<k0> - <k9>
-
-
-
 "}}}
-
-
-
-
-
-
